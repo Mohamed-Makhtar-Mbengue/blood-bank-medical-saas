@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+
+/* Sources Tailwind */
+@source '../../resources/views/**/*.blade.php';
+@source '../../resources/js/**/*.js';
+@source '../../resources/**/*.vue';
+
+/* Police moderne */
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.test-bg {
+    @apply bg-blue-200;
+}
+
+i[class^="fa-"], i[class*=" fa-"] {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    display: inline-block !important;
+}
