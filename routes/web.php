@@ -27,15 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/test-session', function () {
-    session(['mohamed' => 'ok']);
-    return 'session set';
-});
-
-Route::get('/test-session-read', function () {
-    return session('mohamed', 'not found');
-});
-
+    
     // Modules SaaS
     Route::resource('donors', DonorController::class);
     Route::resource('donations', DonationController::class);
