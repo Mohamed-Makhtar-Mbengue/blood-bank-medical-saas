@@ -1,25 +1,47 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EmergencyController;
-use App\Http\Controllers\BloodInventoryController;
-use App\Http\Controllers\DonationController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DonorController;
+use App\Http\Controllers\DonationController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\EmergencyController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('emergencies.index');
+    return redirect('/login');
 });
 
-Route::resource('emergencies', EmergencyController::class)->only([
-    'index', 'create', 'store', 'show', 'destroy'
-]);
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+    ->name('login');
 
-Route::patch('emergencies/{emergency}/complete', 
-    [EmergencyController::class, 'complete']
-)->name('emergencies.complete');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
-Route::resource('inventory', BloodInventoryController::class);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('donations', DonationController::class);
+Route::middleware('auth')->group(function () {
 
-Route::resource('donors', DonorController::class);
+    // Profile Breeze
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/test-session', function () {
+    session(['mohamed' => 'ok']);
+    return 'session set';
+});
+
+Route::get('/test-session-read', function () {
+    return session('mohamed', 'not found');
+});
+
+    // Modules SaaS
+    Route::resource('donors', DonorController::class);
+    Route::resource('donations', DonationController::class);
+    Route::resource('inventory', InventoryController::class);
+    Route::resource('emergencies', EmergencyController::class);
+});
+
+
+require __DIR__.'/auth.php';

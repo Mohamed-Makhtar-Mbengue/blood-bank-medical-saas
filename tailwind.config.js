@@ -1,19 +1,22 @@
-module.exports = {
-  content: [
-    "./resources/**/*.blade.php",
-    "./resources/**/*.js",
-    "./resources/**/*.vue",
-    "./storage/framework/views/*.php",
-    "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
-  ],
-  safelist: [
-    'fa-solid',
-    'fa-eye',
-    'fa-trash',
-    'fa-fw',
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
+import defaultTheme from 'tailwindcss/defaultTheme';
+import forms from '@tailwindcss/forms';
+
+/** @type {import('tailwindcss').Config} */
+export default {
+    darkMode: 'class',
+    content: [
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+    ],
+
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            },
+        },
+    },
+
+    plugins: [forms],
+};

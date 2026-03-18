@@ -73,6 +73,10 @@
 
     {{-- Bouton --}}
     <div class="pt-4">
+        <a href="{{ route('emergencies.index') }}"
+            class="w-full sm:w-auto px-6 py-2 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-700 transition">
+            Annuler la demande
+        </a>
         <button type="submit"
                 class="w-full sm:w-auto px-6 py-2 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-700 transition">
             Enregistrer la demande

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BloodInventory;
+use App\Models\Inventory;
 use App\Http\Requests\StoreBloodInventoryRequest;
 use App\Services\BloodInventoryService;
 
-class BloodInventoryController extends Controller
+class InventoryController extends Controller
 {
     public function index()
     {
-        $inventories = BloodInventory::orderBy('blood_type')->get();
+        $inventories = Inventory::orderBy('blood_type')->get();
 
         return view('inventory.index', compact('inventories'));
     }
@@ -20,7 +20,7 @@ class BloodInventoryController extends Controller
         return view('inventory.create');
     }
 
-    public function store(StoreBloodInventoryRequest $request, BloodInventoryService $service)
+    public function store(StoreInventoryRequest $request, InventoryService $service)
     {
         $service->addStock($request->validated());
 
@@ -29,7 +29,7 @@ class BloodInventoryController extends Controller
             ->with('success', 'Poche de sang ajoutée avec succès.');
     }
 
-    public function destroy(BloodInventory $inventory)
+    public function destroy(Inventory $inventory)
     {
         $inventory->delete();
 

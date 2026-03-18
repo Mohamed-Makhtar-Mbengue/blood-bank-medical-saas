@@ -27,7 +27,7 @@ class EmergencyRequest extends Model
     ];
     public function hasEnoughStock()
     {
-        return \App\Models\BloodInventory::where('blood_type', $this->blood_type)
+        return \App\Models\Inventory::where('blood_type', $this->blood_type)
             ->sum('quantity_ml') >= $this->quantity_ml;
     }
 
