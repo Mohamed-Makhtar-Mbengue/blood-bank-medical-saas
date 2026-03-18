@@ -36,5 +36,12 @@ class InventoryController extends Controller
         return redirect()->route('inventory.index')
             ->with('success', 'Poche supprimée avec succès.');
     }
+    
+    public function show($id)
+    {
+        $inventory = Inventory::findOrFail($id);
+
+        return view('inventory.show', compact('inventory'));
+    }
 
 }

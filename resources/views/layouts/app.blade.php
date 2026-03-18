@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
+<html lang="fr" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,9 +8,20 @@
 
     @vite(['resources/css/app.css','resources/js/app.js'])
 
-    <!-- 🌗 FIX GLOBAL TABLEAUX + FILTRES -->
+    <!-- 🌗 Activation immédiate du thème sombre AVANT le rendu -->
+    <script>
+        if (
+            localStorage.theme === 'dark' ||
+            (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+
+    <!-- 🌗 Styles globaux (tableaux + filtres) -->
     <style>
-        /* TABLEAU GLOBAL */
         table {
             @apply w-full border-collapse rounded-xl overflow-hidden;
         }
@@ -36,7 +47,6 @@
                    text-gray-700 dark:text-gray-300;
         }
 
-        /* FILTRES */
         input, select {
             @apply bg-white dark:bg-gray-800
                    text-gray-700 dark:text-gray-200
@@ -55,17 +65,8 @@
         }
     </style>
 
-    <!-- 🌗 SCRIPT MODE SOMBRE -->
+    <!-- 🌗 Fonction toggle -->
     <script>
-        if (
-            localStorage.theme === 'dark' ||
-            (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        ) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-
         function toggleTheme() {
             const html = document.documentElement;
 

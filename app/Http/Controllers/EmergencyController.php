@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmergencyRequest;
-use App\Models\BloodInventory;
+use App\Models\Inventory;
 use App\Http\Requests\StoreEmergencyRequest;
 use App\Enums\EmergencyLevel;
 use App\Services\EmergencyService;
@@ -59,7 +59,7 @@ class EmergencyController extends Controller
 
     public function show(EmergencyRequest $emergency)
     {
-        $availableBlood = BloodInventory::where('blood_type', $emergency->blood_type)
+        $availableBlood = Inventory::where('blood_type', $emergency->blood_type)
             ->where('expiration_date', '>', now())
             ->sum('quantity_ml');
 
