@@ -33,6 +33,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('donations', DonationController::class);
     Route::resource('inventory', InventoryController::class);
     Route::resource('emergencies', EmergencyController::class);
+
+    // Module Statistiques
+    Route::get('/statistics', [\App\Http\Controllers\StatisticsController::class, 'index'])
+        ->name('statistics.index');
 });
 
 

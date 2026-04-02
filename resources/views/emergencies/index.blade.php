@@ -11,6 +11,41 @@
     </a>
 </div>
 
+{{-- DASHBOARD URGENCES --}}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
+        <h3 class="text-gray-700 dark:text-gray-300 font-semibold">Total urgences</h3>
+        <p class="text-4xl font-bold text-red-600 dark:text-red-400">{{ $totalEmergencies }}</p>
+    </div>
+
+    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
+        <h3 class="text-gray-700 dark:text-gray-300 font-semibold">Ce mois</h3>
+        <p class="text-4xl font-bold text-orange-500 dark:text-orange-400">{{ $emergenciesThisMonth }}</p>
+    </div>
+
+    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
+        <h3 class="text-gray-700 dark:text-gray-300 font-semibold">Types d’urgences</h3>
+        <p class="text-4xl font-bold text-blue-600 dark:text-blue-400">{{ $emergenciesByType->count() }}</p>
+    </div>
+
+</div>
+
+{{-- GRAPHIQUES --}}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+
+    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
+        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Urgences par niveau</h3>
+        <div id="chartEmergencyType"></div>
+    </div>
+
+    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
+        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Urgences par mois</h3>
+        <div id="chartEmergencyMonth"></div>
+    </div>
+
+</div>
+
 {{-- FILTRE --}}
 <form method="GET" class="mb-6 flex gap-3 items-center">
 
@@ -33,22 +68,24 @@
 
 </form>
 
-{{-- TABLEAU --}}
-<div class="bg-white dark:bg-gray-900 shadow-xl rounded-2xl border border-blue-100 dark:border-gray-700 overflow-hidden">
+{{-- TABLEAU RESPONSIVE PREMIUM --}}
+<div class="bg-white dark:bg-gray-900 shadow-xl rounded-2xl border border-blue-100 dark:border-gray-700">
 
-    <div class="overflow-x-auto w-full">
+    {{-- WRAPPER RESPONSIVE --}}
+    <div class="overflow-x-auto rounded-2xl">
 
-        <table class="w-full border-collapse rounded-xl overflow-hidden">
+        <table class="min-w-full text-sm">
 
-            <thead class="bg-blue-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+            {{-- HEADER STICKY --}}
+            <thead class="bg-blue-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 sticky top-0 z-10">
                 <tr>
-                    <th class="px-4 py-3 text-left font-semibold border-b border-blue-300 dark:border-gray-600 whitespace-nowrap">PATIENT</th>
-                    <th class="px-4 py-3 text-left font-semibold border-b border-blue-300 dark:border-gray-600 whitespace-nowrap">GROUPE</th>
-                    <th class="px-4 py-3 text-left font-semibold border-b border-blue-300 dark:border-gray-600 whitespace-nowrap">NIVEAU</th>
-                    <th class="px-4 py-3 text-left font-semibold border-b border-blue-300 dark:border-gray-600 whitespace-nowrap">QTE</th>
-                    <th class="px-4 py-3 text-left font-semibold border-b border-blue-300 dark:border-gray-600 whitespace-nowrap">DATE</th>
-                    <th class="px-4 py-3 text-left font-semibold border-b border-blue-300 dark:border-gray-600 text-center whitespace-nowrap">ACTIONS</th>
-                    <th class="px-4 py-3 text-left font-semibold border-b border-blue-300 dark:border-gray-600 whitespace-nowrap">STOCK</th>
+                    <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">PATIENT</th>
+                    <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">GROUPE</th>
+                    <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">NIVEAU</th>
+                    <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">QTE</th>
+                    <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">DATE</th>
+                    <th class="px-4 py-3 text-center font-semibold whitespace-nowrap">ACTIONS</th>
+                    <th class="px-4 py-3 text-left font-semibold whitespace-nowrap">STOCK</th>
                 </tr>
             </thead>
 
@@ -57,7 +94,7 @@
                 @foreach ($emergencies as $emergency)
                     <tr class="{{ $loop->even ? 'bg-blue-50 dark:bg-gray-700' : 'bg-white dark:bg-gray-800' }}">
 
-                        <td class="px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
+                        <td class="px-4 py-3 font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
                             {{ $emergency->patient_name }}
                         </td>
 
@@ -77,11 +114,11 @@
                             @endif
                         </td>
 
-                        <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap">
+                        <td class="px-4 py-3 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                             {{ $emergency->quantity_ml }} ml
                         </td>
 
-                        <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap">
+                        <td class="px-4 py-3 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                             {{ $emergency->created_at->format('d/m H:i') }}
                         </td>
 
@@ -131,5 +168,8 @@
 <div class="mt-4">
     {{ $emergencies->links() }}
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="/js/emergency-stats.js"></script>
 
 @endsection

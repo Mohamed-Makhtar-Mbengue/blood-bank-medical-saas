@@ -7,7 +7,7 @@ use App\Models\Inventory;
 use App\Http\Requests\StoreEmergencyRequest;
 use App\Enums\EmergencyLevel;
 use App\Services\EmergencyService;
-use App\Services\BloodInventoryService;
+use Illuminate\Support\Facades\DB;
 
 class EmergencyController extends Controller
 {
@@ -15,12 +15,37 @@ class EmergencyController extends Controller
 
     public function index()
     {
+        // Liste paginée
         $emergencies = EmergencyRequest::with('requester')
             ->orderByDesc('emergency_level')
             ->orderByDesc('created_at')
             ->paginate(10);
 
-        return view('emergencies.index', compact('emergencies'));
+        // Statistiques
+        $totalEmergencies = EmergencyRequest::count();
+
+        $emergenciesThisMonth = EmergencyRequest::whereMonth('created_at', now()->month)->count();
+
+        $emergenciesByType = EmergencyRequest::select('emergency_level', DB::raw('COUNT(*) as total'))
+            ->groupBy('emergency_level')
+            ->get();
+
+        $emergenciesByMonth = EmergencyRequest::select(
+                DB::raw('MONTH(created_at) as month'),
+                DB::raw('COUNT(*) as total')
+            )
+            ->whereYear('created_at', now()->year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        return view('emergencies.index', compact(
+            'emergencies',
+            'totalEmergencies',
+            'emergenciesThisMonth',
+            'emergenciesByType',
+            'emergenciesByMonth'
+        ));
     }
 
     public function create()
@@ -36,10 +61,8 @@ class EmergencyController extends Controller
         $data['requested_by'] = null;
 
         try {
-            // 1) Créer l’urgence
             $emergency = EmergencyRequest::create($data);
 
-            // 2) Vérifier et déduire le stock
             $this->service->checkInventory(
                 $emergency->blood_type->value,
                 $emergency->quantity_ml
@@ -55,7 +78,6 @@ class EmergencyController extends Controller
             ->route('emergencies.show', $emergency)
             ->with('success', 'Urgence enregistrée et stock mis à jour.');
     }
-
 
     public function show(EmergencyRequest $emergency)
     {

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\BloodInventory;
+use App\Models\Inventory;
 use Carbon\Carbon;
 
 class BloodInventoryService
@@ -10,10 +10,10 @@ class BloodInventoryService
     /**
      * Ajouter une poche de sang au stock
      */
-    public function addStock(array $data): BloodInventory
+    public function addStock(array $data): Inventory
     {
         // Vérifier si une poche identique existe déjà
-        $existing = BloodInventory::where('blood_type', $data['blood_type'])
+        $existing = Inventory::where('blood_type', $data['blood_type'])
             ->whereDate('expiration_date', $data['expiration_date'])
             ->where('status', 'available') // on fusionne seulement les poches disponibles
             ->first();
@@ -33,7 +33,7 @@ class BloodInventoryService
         }
 
         // Sinon créer une nouvelle poche
-        return BloodInventory::create([
+        return Inventory::create([
             'blood_type'      => $data['blood_type'],
             'quantity_ml'     => $data['quantity_ml'],
             'expiration_date' => $data['expiration_date'],
@@ -48,7 +48,7 @@ class BloodInventoryService
      */
     public function consumeStock(string $bloodType, int $amount): bool
     {
-        $inventory = BloodInventory::where('blood_type', $bloodType)
+        $inventory = Inventory::where('blood_type', $bloodType)
             ->where('status', 'available')
             ->orderBy('expiration_date', 'asc') // FIFO médical
             ->first();
@@ -73,7 +73,7 @@ class BloodInventoryService
      */
     public function markExpired()
     {
-        BloodInventory::where('expiration_date', '<', Carbon::today())
+        Inventory::where('expiration_date', '<', Carbon::today())
             ->where('status', 'available')
             ->update(['status' => 'expired']);
     }

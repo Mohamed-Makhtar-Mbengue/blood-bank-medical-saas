@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\BloodInventory;
-use App\Services\BloodInventoryService;
+use App\Models\Inventory;
+//use App\Services\BloodInventoryService;
 use Exception;
 
 class EmergencyService
@@ -14,7 +14,7 @@ class EmergencyService
     public function checkInventory(string $bloodType, int $quantityNeeded): bool
     {
         // Vérifier le stock total disponible
-        $available = BloodInventory::where('blood_type', $bloodType)
+        $available = Inventory::where('blood_type', $bloodType)
             ->where('expiration_date', '>', now())
             ->where('status', 'available')
             ->sum('quantity_ml');

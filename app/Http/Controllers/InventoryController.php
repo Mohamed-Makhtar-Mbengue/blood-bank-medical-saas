@@ -20,7 +20,7 @@ class InventoryController extends Controller
         return view('inventory.create');
     }
 
-    public function store(StoreInventoryRequest $request, InventoryService $service)
+    public function store(StoreBloodInventoryRequest $request, BloodInventoryService $service)
     {
         $service->addStock($request->validated());
 

@@ -8,7 +8,7 @@
     <div class="flex items-center justify-between mb-8">
         <h2 class="text-3xl font-bold text-blue-700 dark:text-blue-300">Liste des donations</h2>
 
-        <div class="flex gap-3">
+        <div class="flex flex-wrap gap-3">
             <a href="{{ route('donors.index') }}"
                class="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium shadow hover:bg-green-700 transition">
                 Voir les donneurs
@@ -75,21 +75,23 @@
 
     </form>
 
-    <!-- TABLEAU -->
-    <div class="bg-white dark:bg-gray-900 shadow-xl rounded-2xl border border-blue-100 dark:border-gray-700 overflow-hidden">
+    <!-- TABLEAU RESPONSIVE PREMIUM -->
+    <div class="bg-white dark:bg-gray-900 shadow-xl rounded-2xl border border-blue-100 dark:border-gray-700">
 
-        <div class="overflow-x-auto w-full">
+        <!-- WRAPPER RESPONSIVE -->
+        <div class="overflow-x-auto rounded-2xl">
 
-            <table class="w-full border-collapse rounded-xl overflow-hidden">
+            <table class="min-w-full text-sm">
 
-                <thead class="bg-blue-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                <!-- HEADER STICKY -->
+                <thead class="bg-blue-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 sticky top-0 z-10">
                     <tr>
-                        <th class="px-6 py-4 text-left font-semibold border-b border-blue-300 dark:border-gray-600">Donneur</th>
-                        <th class="px-6 py-4 text-left font-semibold border-b border-blue-300 dark:border-gray-600">Groupe</th>
-                        <th class="px-6 py-4 text-left font-semibold border-b border-blue-300 dark:border-gray-600">Quantité</th>
-                        <th class="px-6 py-4 text-left font-semibold border-b border-blue-300 dark:border-gray-600">Date</th>
-                        <th class="px-6 py-4 text-left font-semibold border-b border-blue-300 dark:border-gray-600">Statut</th>
-                        <th class="px-6 py-4 text-left font-semibold border-b border-blue-300 dark:border-gray-600">Actions</th>
+                        <th class="px-6 py-4 text-left font-semibold whitespace-nowrap">Donneur</th>
+                        <th class="px-6 py-4 text-left font-semibold whitespace-nowrap">Groupe</th>
+                        <th class="px-6 py-4 text-left font-semibold whitespace-nowrap">Quantité</th>
+                        <th class="px-6 py-4 text-left font-semibold whitespace-nowrap">Date</th>
+                        <th class="px-6 py-4 text-left font-semibold whitespace-nowrap">Statut</th>
+                        <th class="px-6 py-4 text-center font-semibold whitespace-nowrap">Actions</th>
                     </tr>
                 </thead>
 
@@ -98,23 +100,23 @@
                     @foreach($donations as $donation)
                         <tr class="{{ $loop->even ? 'bg-blue-50 dark:bg-gray-700' : 'bg-white dark:bg-gray-800' }}">
 
-                            <td class="px-6 py-4 text-gray-700 dark:text-gray-300">
+                            <td class="px-6 py-4 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                                 {{ $donation->donor->name }}
                             </td>
 
-                            <td class="px-6 py-4 text-gray-700 dark:text-gray-300">
+                            <td class="px-6 py-4 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                                 {{ $donation->blood_type }}
                             </td>
 
-                            <td class="px-6 py-4 text-gray-700 dark:text-gray-300">
+                            <td class="px-6 py-4 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                                 {{ $donation->quantity_ml }} ml
                             </td>
 
-                            <td class="px-6 py-4 text-gray-700 dark:text-gray-300">
+                            <td class="px-6 py-4 text-gray-700 dark:text-gray-300 whitespace-nowrap">
                                 {{ $donation->donation_date->format('d/m/Y') }}
                             </td>
 
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 @if($donation->status === 'completed')
                                     <span class="px-2 py-1 bg-green-200 text-green-800 dark:bg-green-700 dark:text-green-200 rounded-lg text-xs font-semibold">
                                         Complété
@@ -130,7 +132,7 @@
                                 @endif
                             </td>
 
-                            <td class="px-6 py-4 flex items-center gap-3">
+                            <td class="px-6 py-4 flex items-center gap-3 justify-center whitespace-nowrap">
 
                                 <a href="{{ route('donations.show', $donation) }}"
                                    class="px-3 py-1 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition">
